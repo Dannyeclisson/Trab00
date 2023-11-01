@@ -3,12 +3,12 @@ public abstract class UsuarioBase {
     protected String nomeUsuario;
     protected String idadeUsuario;
     protected String biografiaUsuario;
-    protected double alturaUsuario;
+    protected String alturaUsuario;
     protected String numeroUsuario;
     protected String sexoUsuario;
 
 
-    public UsuarioBase(String nomeUsuario, String idadeUsuario, String biografiaUsuario, double alturaUsuario, String numeroUsuario, String sexoUsuario) {
+    public UsuarioBase(String nomeUsuario, String idadeUsuario, String biografiaUsuario, String alturaUsuario, String numeroUsuario, String sexoUsuario) {
         this.nomeUsuario = nomeUsuario;
         this.idadeUsuario = idadeUsuario;
         this.biografiaUsuario = biografiaUsuario;
@@ -25,7 +25,7 @@ public abstract class UsuarioBase {
         this.biografiaUsuario = biografiaUsuario;
     }
 
-    public void setAlturaUsuario(double alturaUsuario) {
+    public void setAlturaUsuario(String alturaUsuario) {
         this.alturaUsuario = alturaUsuario;
     }
 

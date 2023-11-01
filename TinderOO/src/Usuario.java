@@ -6,8 +6,10 @@ public class Usuario extends UsuarioBase{
     private CartaoUsuario cartaousuario;
 
 
-    public Usuario(String nomeUsuario, String idadeUsuario, String biografiaUsuario, double alturaUsuario, String numeroUsuario, String sexoUsuario) {
+    public Usuario(String nomeUsuario, String idadeUsuario, String biografiaUsuario, String alturaUsuario, String numeroUsuario, String sexoUsuario, String preferenciaIdade, String preferenciaGenero) {
         super(nomeUsuario, idadeUsuario, biografiaUsuario, alturaUsuario, numeroUsuario, sexoUsuario);
+        this.preferenciaGenero = preferenciaGenero;
+        this.preferenciaIdade = preferenciaIdade;
     }
 
     public void setPreferenciaIdade(String preferenciaIdade) {
@@ -22,6 +24,8 @@ public class Usuario extends UsuarioBase{
 
     }
 
-
+    public String getNomeUsuario(){
+        return nomeUsuario;
+    }
 
 }
