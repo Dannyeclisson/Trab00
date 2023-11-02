@@ -24,4 +24,15 @@ public class CartaoUsuario {
         this.identificadorCartao = identificadorCartao;
     }
 
+
+    public String toString() {
+        return "CartaoUsuario{" +
+                "numeroCartao='" + numeroCartao + '\'' +
+                ", validadeCartao='" + validadeCartao + '\'' +
+                ", numeroSeguranca=" + numeroSeguranca +
+                ", nomeNoCartao='" + nomeNoCartao + '\'' +
+                ", bandeiraCartao='" + bandeiraCartao + '\'' +
+                ", identificadorCartao='" + identificadorCartao + '\'' +
+                '}';
+    }
 }
