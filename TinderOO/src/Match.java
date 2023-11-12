@@ -12,7 +12,18 @@ public class Match extends UsuarioBase{
 
 
     public String lerDados(){
-        return "Nome do Match: " + nomeUsuario + "\nIdade do Match: " + idadeUsuario + "\nBiografia do Match: " + biografiaUsuario + "\nAltura do Match" + alturaUsuario + "\nNumero do Match: " + numeroUsuario + "\nSexo do Match: " + sexoUsuario +"\n\n";
+        return "Nome do Match: " +
+                nomeUsuario + "\n" +
+                "Idade do Match: " +
+                idadeUsuario + "\n" +
+                "Biografia do Match: " +
+                biografiaUsuario + "\n" +
+                "Altura do Match" +
+                alturaUsuario + "\n" +
+                "Numero do Match: " +
+                numeroUsuario + "\n" +
+                "Sexo do Match: " +
+                sexoUsuario +"\n\n";
     }
 
     public void setMatchAceito(boolean matchAceito) {

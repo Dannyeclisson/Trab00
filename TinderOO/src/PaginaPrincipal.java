@@ -1,15 +1,15 @@
+
 import java.util.Scanner;
 
 public class PaginaPrincipal {
     private Usuario u;
     private Match[] matches;
 
-
-
     private Match[] listaMatchesAceitos;
     private int numMatchesAceitos = 0;
     private static Dados dados;
     private int numMatches = 0; // Variável para controlar o próximo Match a ser exibido
+
 
     public static void limparTela() {
         System.out.print("\u001b[H\u001b[2J");
@@ -30,52 +30,7 @@ public class PaginaPrincipal {
         listaMatchesAceitos = new Match[10];
     }
 
-    public String listarMatches() {
-        String saida = "***** Lista de Matches *****\n";
-
-        for (int i = 0; i < dados.getnMatches(); i++) {
-            saida = saida + "\n" + matches[i].lerDados();
-        }
-
-        return saida;
-    }
-
-    public void criarCartao() {
-        Usuario usuario = dados.getUsuario();
-        if (!usuario.getPossuiCartao()) {
-            System.out.println("Você deseja criar um cartão? (Sim/Não)");
-            Scanner scanner = new Scanner(System.in);
-            String resposta = scanner.nextLine();
-
-            if (resposta.equalsIgnoreCase("Sim")) {
-                usuario.solicitarCadastroCartao();
-                CartaoUsuario cartaoDoUsuario = usuario.getCartao();
-                usuario.setPossuiCartao(true);
-                limparTela();
-                System.out.println("Cartão criado com sucesso:");
-                System.out.println(cartaoDoUsuario.toString());
-                pausarAntesDeLimpar();
-            } else {
-                System.out.println("Operação cancelada.");
-            }
-        } else {
-            System.out.println("Você já tem um cartão cadastrado!");
-        }
-    }
-
-    public void apagarCartao() {
-        Usuario usuario = dados.getUsuario();
-        if(usuario.getPossuiCartao()) {
-            usuario.apagarCartao();
-            usuario.setPossuiCartao(false);
-            pausarAntesDeLimpar();
-        }else{
-            limparTela();
-            System.out.println("\nVocê não possui cartões para apagar!");
-            pausarAntesDeLimpar();
-        }
-    }
-
+    //*************************USUARIO**********************************//
     public void configuracoesUsuario() {
         Usuario usuario = dados.getUsuario();
         Scanner scanner = new Scanner(System.in);
@@ -127,6 +82,65 @@ public class PaginaPrincipal {
         pausarAntesDeLimpar();
     }
 
+    public void listarInformacoesUsuario(){ //Listagem
+        Usuario u = dados.getUsuario();
+        System.out.println(u.getInformacoesUsuario());
+    }
+    //*****************************************************************//
+
+
+    //*************************MATCHES**********************************//
+    public void menuMatches() {
+        Scanner scanner = new Scanner(System.in);
+        boolean sair = false;
+
+        // Exibe o primeiro próximoMatch
+        limparTela();
+        proximoMatch();
+
+        while (!sair) {
+            System.out.println("Opções de Matches:");
+            System.out.println("1. Próximo Match");
+            System.out.println("2. Match Anterior");
+            System.out.println("3. Dar Match");
+            System.out.println("4. Cancelar um Match");
+
+            System.out.println("5. Voltar");
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1:
+                    limparTela();
+                    proximoMatch();
+                    break;
+                case 2:
+                    limparTela();
+                    voltarMatchAnterior();
+                    break;
+
+                case 3:
+                    limparTela();
+                    darMatch();
+                    pausarAntesDeLimpar();
+                    break;
+
+                case 4:
+                    cancelarMatch();
+                    pausarAntesDeLimpar();
+                    break;
+
+                case 5:
+                    sair = true;
+                    limparTela();
+                    break;
+
+                default:
+                    System.out.println("Escolha inválida.");
+            }
+        }
+    }
+
     public void proximoMatch() {
         Match[] listaMatches = dados.getMatches();
         int totalMatches = dados.getnMatches();
@@ -138,11 +152,33 @@ public class PaginaPrincipal {
                 System.out.println("Próximo Match:\n\n");
                 System.out.println(proximoMatch.lerDados());
                 numMatches++; // Atualiza o índice para o próximo Match
+
             } else {
                 System.out.println("Você já visualizou todos os Matches disponíveis.");
             }
         } else {
             System.out.println("Nenhum Match disponível.");
+        }
+    }
+
+    private void voltarMatchAnterior() {
+        Usuario u = dados.getUsuario();
+        if(u.possuiAssinatura()){
+
+
+            if (numMatches > 0) {
+                // Atualiza o índice para o Match anterior
+                numMatches--;
+                Match matchAnterior = dados.getMatches()[numMatches -1];
+
+                System.out.println("Voltando ao Match Anterior:\n\n");
+                System.out.println(matchAnterior.lerDados());
+
+            } else {
+                System.out.println("Não há Match anterior disponível.");
+            }
+        }else{
+            System.out.println("Essa função está disponível apenas para usuários com assinatura.");
         }
     }
 
@@ -152,14 +188,18 @@ public class PaginaPrincipal {
 
         if (totalMatches > 0) {
             if (numMatches > 0 && numMatches <= totalMatches) {
-                // Defina o estado de matchAceito para true no Match atual
-                listaMatches[numMatches - 1].setMatchAceito(true);
 
-                // Adicione o Match aceito à lista de Matches aceitos
-                listaMatchesAceitos[numMatchesAceitos] = listaMatches[numMatches - 1];
-                numMatchesAceitos++;
+                if(!listaMatches[numMatches - 1].matchAceito()) {
+                    listaMatches[numMatches - 1].setMatchAceito(true);
 
-                System.out.println("Você deu Match com o Match atual!");
+
+                    listaMatchesAceitos[numMatchesAceitos] = listaMatches[numMatches - 1];
+                    numMatchesAceitos++;
+
+                    System.out.println("Você deu Match com o Match atual!");
+                }else{
+                    System.out.println("Você já deu match com esse usuario!");
+                }
             } else {
                 System.out.println("Não há Match disponível para dar Match.");
             }
@@ -197,52 +237,44 @@ public class PaginaPrincipal {
         }
     }
 
+    public String listarMatches() {
+        String saida = "***** Lista de Matches *****\n";
 
+        for (int i = 0; i < dados.getnMatches(); i++) {
+            saida = saida + "\n" + matches[i].lerDados();
+        }
 
-    public void menuMatches() {
+        return saida;
+    }
+
+    public String buscarMatchesAceitos() {
+        Match[] listaMatches = dados.getMatches();
+        StringBuilder resultado = new StringBuilder();
         Scanner scanner = new Scanner(System.in);
-        boolean sair = false;
 
-        // Exibe o primeiro próximoMatch
-        limparTela();
-        proximoMatch();
+        if (numMatchesAceitos != 0) {
+            System.out.println("Digite o nome do match que deseja buscar: ");
+            String nomeABuscar = scanner.next();
 
-        while (!sair) {
-            System.out.println("Opções de Matches:");
-            System.out.println("1. Próximo Match");
-            System.out.println("2. Dar Match");
-            System.out.println("3. Cancelar um Match");
-            System.out.println("4. Voltar");
-
-            int escolha = scanner.nextInt();
-
-            switch (escolha) {
-                case 1:
-                    limparTela();
-                    proximoMatch();
-                    break;
-                case 2:
-                    darMatch();
-                    pausarAntesDeLimpar();
-                    break;
-
-                case 3:
-                    cancelarMatch();
-                    pausarAntesDeLimpar();
-                    break;
-                case 4:
-                    sair = true;
-                    limparTela();
-                    break;
-
-                default:
-                    System.out.println("Escolha inválida.");
+            for (int i = 0; i < numMatchesAceitos; i++) {
+                if (nomeABuscar.equalsIgnoreCase(listaMatchesAceitos[i].getNomeMatch())) {
+                    resultado.append(listaMatchesAceitos[i].lerDados());
+                }
             }
+
+            if (resultado.length() > 0) {
+                return resultado.toString();
+            } else {
+                System.out.println("Nenhum Match aceito encontrado com o nome informado.");
+                return "";  // ou null, dependendo do que faz mais sentido para o seu programa
+            }
+        } else {
+            System.out.println("Não existem Matches aceitos para buscar!");
+            return "";  // ou null, dependendo do que faz mais sentido para o seu programa
         }
     }
 
-
-    public String verificarMatchesUsuario(){
+    public String filtrarMatchesUsuario(){ // Filtro
         Match[] listamatches = dados.getMatches();
         StringBuilder resultado = new StringBuilder();
 
@@ -258,6 +290,131 @@ public class PaginaPrincipal {
         return resultado.toString();
 
     }
+    //***********************************************************//
+
+
+
+    //*************************CARTOES E ASSINATURA**********************************//
+    public void menuCartoes(){
+        Usuario u = dados.getUsuario();
+        Scanner scanner = new Scanner(System.in);
+        boolean sair = false;
+        limparTela();
+
+        while(!sair){
+            System.out.println("Bem-vindo ao menu de Cartoes!");
+            System.out.println("Opções:");
+            System.out.println("1. Criar cartao");
+            System.out.println("2. Deletar Cartao");
+            System.out.println("3. Listar dados do cartao");
+            System.out.println("4. Sair");
+
+            int resposta = scanner.nextInt();
+
+            switch(resposta){
+                case 1:
+                    limparTela();
+                    criarCartao();
+                    break;
+                case 2:
+                    apagarCartao();
+                    break;
+                case 3:
+                    System.out.println(listarDadosCartao());
+                    pausarAntesDeLimpar();
+                    break;
+                case 4:
+                    sair = true;
+                    System.out.println("Saindo do programa.");
+                    break;
+                default:
+                    System.out.println("Escolha inválida.");
+
+            }
+        }
+    }
+
+    public String listarDadosCartao(){
+        Usuario u = dados.getUsuario();
+        StringBuilder resultado = new StringBuilder();
+        if(u.getPossuiCartao()){
+            resultado.append(u.getCartao().toString());
+            return resultado.toString();
+        }else{
+            return "Você ainda não possui um cartao!";
+        }
+    }
+
+    public void criarCartao() {
+        Usuario usuario = dados.getUsuario();
+        if (!usuario.getPossuiCartao()) {
+            usuario.solicitarCadastroCartao();
+            CartaoUsuario cartaoDoUsuario = usuario.getCartao();
+            usuario.setPossuiCartao(true);
+            limparTela();
+            System.out.println("Cartão criado com sucesso:");
+            pausarAntesDeLimpar();
+
+        }else {
+            System.out.println("Você já tem um cartão cadastrado!");
+            pausarAntesDeLimpar();
+        }
+    }
+
+    public void apagarCartao() {
+        Usuario usuario = dados.getUsuario();
+        if(usuario.getPossuiCartao()) {
+            usuario.apagarCartao();
+            usuario.setPossuiCartao(false);
+            System.out.println("Cartao apagado com sucesso!");
+            pausarAntesDeLimpar();
+        }else{
+            limparTela();
+            System.out.println("\nVocê não possui cartões para apagar!");
+            pausarAntesDeLimpar();
+        }
+    }
+
+    public void menuAssinatura(){
+        Usuario u = dados.getUsuario();
+        Scanner scanner = new Scanner(System.in);
+
+        boolean sair = false;
+        limparTela();
+        while(!sair){
+            System.out.println("Bem-vindo ao menu de Assinaturas!");
+            System.out.println("Opções:");
+            System.out.println("1. Detalhar assinatura");
+            System.out.println("2. Assinar   assinatura");
+            System.out.println("3. Cancelar Assinatura");
+            System.out.println("4. Sair");
+
+            int escolha = scanner.nextInt();
+            switch(escolha){
+                case 1:
+                    System.out.println(u.mostrarDescricaoAssinatura());
+                    pausarAntesDeLimpar();
+                    break;
+                case 2:
+                    u.comprarAssinaturaCartao();
+                    pausarAntesDeLimpar();
+                    break;
+                case 3:
+                    u.cancelarAssinatura();
+                    pausarAntesDeLimpar();
+                    break;
+                case 4:
+                    sair = true;
+                    System.out.println("Saindo do programa.");
+                    limparTela();
+                    break;
+                default:
+                    System.out.println("Escolha inválida.");
+            }
+        }
+    }
+
+    //***********************************************************//
 
     public static void main(String[] args) {
         PaginaPrincipal pagina = new PaginaPrincipal();
@@ -265,42 +422,70 @@ public class PaginaPrincipal {
         Scanner scanner = new Scanner(System.in);
         boolean sair = false;
         while (!sair) {
+            limparTela();
             System.out.println("Bem-vindo ao seu perfil de usuário!");
             System.out.println("Opções:");
-            System.out.println("1. Configurações de usuário");
-            System.out.println("2. Criar cartão");
-            System.out.println("3. Deletar cartão");
-            System.out.println("4. Matches");
-            System.out.println("5. Verificar Matches do Usuario");
-            System.out.println("6. Sair");
+            System.out.println("1. Menu de Matches");
+            System.out.println("2. Configurações de usuário");
+            System.out.println("3. Menu de Cartoes");
+
+            System.out.println("4. Menu de Assinaturas");
+            System.out.println("5. Filtrar Matches Aceitos do Usuario");
+            System.out.println("6. Listar Informacoes do Usuario");
+
+            System.out.println("7. Buscar Matches Aceitos");
+            System.out.println("8. Listar todos os Matches");
+
+            System.out.println("9. Sair");
 
             int escolha = scanner.nextInt();
 
             switch (escolha) {
                 case 1:
-                    pagina.configuracoesUsuario();
-                    break;
-                case 2:
-                    pagina.criarCartao();
-                    break;
-                case 3:
-                    pagina.apagarCartao();
-                    break;
-                case 4:
                     limparTela();
                     pagina.menuMatches();
                     break;
+                case 2:
+                    pagina.configuracoesUsuario();
+                    break;
+
+
+                case 3:
+                    pagina.menuCartoes();
+                    break;
+
+
+                case 4:
+                    pagina.menuAssinatura();
+                    break;
 
                 case 5:
-                    String matchesUsuario2 = pagina.verificarMatchesUsuario();
+                    String matchesUsuario2 = pagina.filtrarMatchesUsuario();
                     System.out.println(matchesUsuario2);
                     pausarAntesDeLimpar();
                     break;
 
                 case 6:
+                    pagina.listarInformacoesUsuario();
+                    pausarAntesDeLimpar();
+                    break;
+
+                case 7:
+                    String resultadoBusca = pagina.buscarMatchesAceitos();
+                    System.out.println(resultadoBusca);
+                    pausarAntesDeLimpar();
+                    break;
+
+                case 8:
+                    System.out.println(pagina.listarMatches());
+                    pausarAntesDeLimpar();
+                    break;
+
+                case 9:
                     sair = true;
                     System.out.println("Saindo do programa.");
                     break;
+
                 default:
                     System.out.println("Escolha inválida.");
             }

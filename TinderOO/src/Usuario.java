@@ -1,6 +1,8 @@
 import java.util.Scanner;
 public class Usuario extends UsuarioBase{
     private boolean tipoAssinatura;
+
+    private AssinaturaPlatinum aP;
     private String preferenciaIdade;
     private String preferenciaGenero;
     private String likesUsuario;
@@ -14,6 +16,7 @@ public class Usuario extends UsuarioBase{
         super(nomeUsuario, idadeUsuario, biografiaUsuario, alturaUsuario, numeroUsuario, sexoUsuario);
         this.preferenciaGenero = preferenciaGenero;
         this.preferenciaIdade = preferenciaIdade;
+        this.aP = new AssinaturaPlatinum();
     }
 
 
@@ -71,14 +74,58 @@ public class Usuario extends UsuarioBase{
         this.cartaousuario = null;
     }
 
+    public void comprarAssinaturaCartao(){
+        if(getPossuiCartao()){
+            aP.ativarRecursoPremium();
+
+        } else{
+            System.out.println("Você precisa ter um cartão cadastrado para pagar a assinatura!");
+        }
+    }
+
+    public void cancelarAssinatura(){
+        if(!possuiAssinatura()){
+            System.out.println("Não há assinatura para ser cancelada!");
+        }else{
+            aP.cancelarRecursoPremium();
+
+        }
+    }
+
+
 
     public CartaoUsuario getCartao() {
         return cartaousuario;
     }
 
+    public boolean possuiAssinatura(){
+        return aP.getAssinaturaAtivada();
+    }
 
     public String getNomeUsuario(){
         return nomeUsuario;
     }
 
+    public String mostrarDescricaoAssinatura(){
+        return aP.detalharAssinatura();
+    }
+
+    public String mudarTipoAssinatura(){//Utilizado apenas no getInformacoesUsuario para alterar o tipo de assinatura de "false" ou "true" para "tem assinatura" ou "nao tem assinatura."
+        if (aP.getAssinaturaAtivada()){
+            return "Tem assinatura" ;
+        }else{
+            return "Nao tem assinatura";
+        }
+    }
+    public String getInformacoesUsuario() {
+        return "Nome do Usuario: " + nomeUsuario + "\n" +
+                "Tipo de Assinatura: " + mudarTipoAssinatura() + "\n" +
+                "Preferencia de Idade: " + preferenciaIdade + "\n" +
+                "Preferencia de Genero: " + preferenciaGenero + "\n" +
+                "Idade do Usuario: " + idadeUsuario + "\n" +
+                "Biografia do Usuario: " + biografiaUsuario + "\n" +
+                "Altura do Usuario: " + alturaUsuario + "\n" +
+                "Numero do Usuario: " + numeroUsuario + "\n" +
+                "Sexo do Usuario: " + sexoUsuario + "\n";
+    }
 }
