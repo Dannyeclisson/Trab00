@@ -1,4 +1,4 @@
-public class CartaoUsuario {
+public class CartaoUsuario {//4 Crud
     private String numeroCartao;
     private String validadeCartao;
     private int numeroSeguranca;
@@ -22,6 +22,25 @@ public class CartaoUsuario {
 
     }
 
+    public void setNumeroCartao(String numeroCartao){
+        this.numeroCartao = numeroCartao;
+    }
+
+    public void setValidadeCartao(String validadeCartao){
+        this.validadeCartao = validadeCartao;
+    }
+
+    public void setNumeroSeguranca(int numeroSeguranca) {
+        this.numeroSeguranca = numeroSeguranca;
+    }
+
+    public void setNomeNoCartao(String nomeNoCartao) {
+        this.nomeNoCartao = nomeNoCartao;
+    }
+
+    public void setBandeiraCartao(String bandeiraCartao) {
+        this.bandeiraCartao = bandeiraCartao;
+    }
 
     public String toString() {
         return  "Numero do cartao: " +

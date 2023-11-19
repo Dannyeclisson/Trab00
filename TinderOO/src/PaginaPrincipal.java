@@ -42,13 +42,25 @@ public class PaginaPrincipal {
         System.out.println("4. Alterar número de telefone");
         System.out.println("5. Alterar preferência de idade");
         System.out.println("6. Alterar preferência de gênero");
+        System.out.println("7. Alterar preferencia de distancia maxima");
 
-        int escolha = scanner.nextInt();
-
+        int escolha = 0;
+        boolean escolhaValida = false;
+        while(!escolhaValida) {
+            if (scanner.hasNextInt()) {
+                escolha = scanner.nextInt();
+                scanner.nextLine();
+                escolhaValida = true;
+            } else {
+                System.out.println("Escolha Invalida.");
+                scanner.next();
+                pausarAntesDeLimpar();
+            }
+        }
         switch (escolha) {
             case 1:
                 System.out.print("Nova idade: ");
-                String novaIdade = scanner.next();
+                int novaIdade = scanner.nextInt();
                 usuario.setIdadeUsuario(novaIdade);
                 break;
             case 2:
@@ -67,17 +79,56 @@ public class PaginaPrincipal {
                 usuario.setNumeroUsuario(novoNumero);
                 break;
             case 5:
-                System.out.print("Nova preferência de idade: ");
-                String novaPreferenciaIdade = scanner.next();
-                usuario.setPreferenciaIdade(novaPreferenciaIdade);
+
+                int novaPreferenciaIdade = 0;
+                boolean preferenciaIdadeValida = false;
+                while (!preferenciaIdadeValida) {
+                    System.out.print("Nova preferencia de Idade: ");
+                    if (scanner.hasNextInt()) {
+                        novaPreferenciaIdade = scanner.nextInt();
+                        usuario.setPreferenciaIdade(novaPreferenciaIdade);
+                        scanner.nextLine();
+                        preferenciaIdadeValida = true;
+                    } else {
+                        System.out.println("Digite um valor válido para a preferencia de idade.");
+                        scanner.next();
+
+                    }
+
+                }
+
                 break;
             case 6:
                 System.out.print("Nova preferência de gênero: ");
                 String novaPreferenciaGenero = scanner.next();
                 usuario.setPreferenciaGenero(novaPreferenciaGenero);
                 break;
+            case 7:
+
+                int novaPreferenciaDeDistanciaMaxima = 0;
+                boolean preferenciaDeDistanciaMaximaValida = false;
+                while(!preferenciaDeDistanciaMaximaValida) {
+                    System.out.print("Nova preferência de distancia maxima: ");
+                    if(scanner.hasNextInt()) {
+                        novaPreferenciaDeDistanciaMaxima = scanner.nextInt();
+                        usuario.setDistanciaMaxima(novaPreferenciaDeDistanciaMaxima);
+                        scanner.nextLine();
+                        preferenciaDeDistanciaMaximaValida = true;
+                    }else{
+                        System.out.println("Digite um valor válido para a preferencia de idade.");
+                        scanner.next();
+                    }
+                }
+                break;
+            case 8:
+                System.out.print("Novos interesses pessoais: ");
+                String novosInteressesPessoais = scanner.next();
+                usuario.setInteressesPessoais(novosInteressesPessoais);
+                break;
             default:
                 System.out.println("Escolha inválida.");
+                pausarAntesDeLimpar();
+                break;
         }
         pausarAntesDeLimpar();
     }
@@ -107,7 +158,30 @@ public class PaginaPrincipal {
 
             System.out.println("5. Voltar");
 
-            int escolha = scanner.nextInt();
+
+
+            int escolha = 0;
+            boolean escolhaValida = false;
+            while(!escolhaValida) {
+                if (scanner.hasNextInt()) {
+                    escolha = scanner.nextInt();
+                    scanner.nextLine();
+                    escolhaValida = true;
+                } else {
+                    System.out.println("Escolha Invalida.");
+                    scanner.next();
+                    pausarAntesDeLimpar();
+                    System.out.println("Opções de Matches:");
+                    System.out.println("1. Próximo Match");
+                    System.out.println("2. Match Anterior");
+                    System.out.println("3. Dar Match");
+                    System.out.println("4. Cancelar um Match");
+
+                    System.out.println("5. Voltar");
+
+
+                }
+            }
 
             switch (escolha) {
                 case 1:
@@ -162,7 +236,7 @@ public class PaginaPrincipal {
     }
 
     private void voltarMatchAnterior() {
-        Usuario u = dados.getUsuario();
+        Usuario  u = dados.getUsuario();
         if(u.possuiAssinatura()){
 
 
@@ -306,12 +380,24 @@ public class PaginaPrincipal {
             System.out.println("Opções:");
             System.out.println("1. Criar cartao");
             System.out.println("2. Deletar Cartao");
-            System.out.println("3. Listar dados do cartao");
-            System.out.println("4. Sair");
+            System.out.println("3. Editar dados do Cartao");
+            System.out.println("4. Listar dados do cartao");
+            System.out.println("5. Sair");
 
-            int resposta = scanner.nextInt();
-
-            switch(resposta){
+            int escolha = 0;
+            boolean escolhaValida = false;
+            while(!escolhaValida) {
+                if (scanner.hasNextInt()) {
+                    escolha = scanner.nextInt();
+                    scanner.nextLine();
+                    escolhaValida = true;
+                } else {
+                    System.out.println("Escolha Invalida.");
+                    scanner.next();
+                    pausarAntesDeLimpar();
+                }
+            }
+            switch(escolha){
                 case 1:
                     limparTela();
                     criarCartao();
@@ -320,15 +406,21 @@ public class PaginaPrincipal {
                     apagarCartao();
                     break;
                 case 3:
+                    editarCartao();
+                    System.out.println("Alteracao realizada com sucesso!");
+                    break;
+                case 4:
                     System.out.println(listarDadosCartao());
                     pausarAntesDeLimpar();
                     break;
-                case 4:
+                case 5:
                     sair = true;
                     System.out.println("Saindo do programa.");
                     break;
                 default:
                     System.out.println("Escolha inválida.");
+                    pausarAntesDeLimpar();
+                    break;
 
             }
         }
@@ -375,10 +467,19 @@ public class PaginaPrincipal {
         }
     }
 
+    public void editarCartao(){
+        Usuario u = dados.getUsuario();
+        u.setDadosCartao();
+        pausarAntesDeLimpar();
+
+
+    }
+
     public void menuAssinatura(){
         Usuario u = dados.getUsuario();
+        Assinatura assinatura = new Assinatura();
         Scanner scanner = new Scanner(System.in);
-
+        Scanner scanner2 = new Scanner(System.in);
         boolean sair = false;
         limparTela();
         while(!sair){
@@ -390,19 +491,61 @@ public class PaginaPrincipal {
             System.out.println("4. Sair");
 
             int escolha = scanner.nextInt();
+            int escolha2;
             switch(escolha){
                 case 1:
-                    System.out.println(u.mostrarDescricaoAssinatura());
-                    pausarAntesDeLimpar();
+                    System.out.println("Qual assinatura gostaria de detalhar?\n1.Platinum\n2.Diamond");
+                    escolha2 = scanner2.nextInt();
+                    switch (escolha2) {
+                        case 1:
+                        System.out.println(assinatura.detalharAssinaturaPlatinum());
+                        pausarAntesDeLimpar();
+                        break;
+                        case 2:
+                        System.out.println(assinatura.detalharAssinaturaDiamond());
+                        pausarAntesDeLimpar();
+                        break;
+                        default:
+                            System.out.println("Escolha Invalida");
+                            pausarAntesDeLimpar();
+                            break;
+                    }
                     break;
                 case 2:
-                    u.comprarAssinaturaCartao();
-                    pausarAntesDeLimpar();
-                    break;
+                    if(u.possuiAssinatura()){
+                        System.out.println("Voce ja tem uma assinatura!");
+                        pausarAntesDeLimpar();
+                        break;
+                    }else {
+                        System.out.println("Qual assinatura gostaria de assinar?\n1.Platinum\n2.Diamond");
+                        escolha2 = scanner2.nextInt();
+                        switch (escolha2) {
+                            case 1:
+                                u.comprarAssinaturaPlatinumCartao();
+                                pausarAntesDeLimpar();
+                                break;
+                            case 2:
+                                u.comprarAssinaturaDiamondCartao();
+                                pausarAntesDeLimpar();
+                                break;
+                            default:
+                                System.out.println("Escolha inválida.");
+                                pausarAntesDeLimpar();
+                                break;
+                        }
+                        break;
+                    }
                 case 3:
-                    u.cancelarAssinatura();
-                    pausarAntesDeLimpar();
-                    break;
+                    if(u.possuiAssinatura()) {
+                        u.cancelarAssinatura();
+                        pausarAntesDeLimpar();
+                        break;
+                    }else{
+                        System.out.println("Voce nao possui uma assinatura para ser cancelada!");
+                        pausarAntesDeLimpar();
+                        break;
+                    }
+
                 case 4:
                     sair = true;
                     System.out.println("Saindo do programa.");
@@ -410,6 +553,8 @@ public class PaginaPrincipal {
                     break;
                 default:
                     System.out.println("Escolha inválida.");
+                    pausarAntesDeLimpar();
+                    break;
             }
         }
     }
@@ -438,8 +583,33 @@ public class PaginaPrincipal {
 
             System.out.println("9. Sair");
 
-            int escolha = scanner.nextInt();
+            int escolha = 0;
+            boolean escolhaValida = false;
+            while(!escolhaValida) {
+                if (scanner.hasNextInt()) {
+                    escolha = scanner.nextInt();
+                    scanner.nextLine();
+                    escolhaValida = true;
+                } else {
+                    System.out.println("Escolha Invalida.");
+                    scanner.next();
+                    pausarAntesDeLimpar();
+                    System.out.println("Bem-vindo ao seu perfil de usuário!");
+                    System.out.println("Opções:");
+                    System.out.println("1. Menu de Matches");
+                    System.out.println("2. Configurações de usuário");
+                    System.out.println("3. Menu de Cartoes");
 
+                    System.out.println("4. Menu de Assinaturas");
+                    System.out.println("5. Filtrar Matches Aceitos do Usuario");
+                    System.out.println("6. Listar Informacoes do Usuario");
+
+                    System.out.println("7. Buscar Matches Aceitos");
+                    System.out.println("8. Listar todos os Matches");
+
+                    System.out.println("9. Sair");
+                }
+            }
             switch (escolha) {
                 case 1:
                     limparTela();

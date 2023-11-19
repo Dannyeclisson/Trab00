@@ -5,7 +5,7 @@ public class Match extends UsuarioBase{
 
     private boolean matchAceito;
 
-    public Match(String nomeUsuario, String idadeUsuario, String biografiaUsuario, String alturaUsuario, String numeroUsuario, String sexoUsuario, String idMatch) {
+    public Match(String nomeUsuario, int idadeUsuario, String biografiaUsuario, String alturaUsuario, String numeroUsuario, String sexoUsuario, String idMatch) {
         super(nomeUsuario, idadeUsuario, biografiaUsuario, alturaUsuario, numeroUsuario, sexoUsuario);
         this.idMatch = idMatch;
     }

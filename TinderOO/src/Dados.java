@@ -49,12 +49,12 @@ public class Dados {
     }
 
     public void preencherDados() {
-        usuario = new Usuario("Usuario", "Idade", "Biografia", "Altura", "Numero do Usuario", "Sexo", "Preferencia de Idade", "Preferencia de genero");
+        usuario = new Usuario("Usuario", 18, "Biografia", "Altura", "Numero do Usuario", "Sexo", 30, 18 , "Feminino/Masculino", "Viajar, escutar musica, andar de bicicleta");
 
         for (int i = 0; i < 10; i++) {
             String s = String.valueOf(i);
 
-            matches[i] = new Match("Match".concat(s), "Idade".concat(s), "Biografia".concat(s),
+            matches[i] = new Match("Match".concat(s), 18 , "Biografia".concat(s),
                     "Altura do Match".concat(s), "Numero do Match".concat(s), "Sexo do Match".concat(s), "IdMatch".concat(s));
         }
         nMatches = 10;
