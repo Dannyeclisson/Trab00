@@ -2,8 +2,8 @@ import java.util.Scanner;
 public class Usuario extends UsuarioBase{ //Primeiro Crud
     private boolean tipoAssinatura;
 
-    private PreferenciaUsuario pU;
-    private Assinatura aP;
+    private preferenciaUsuario pU;
+    private assinatura aP;
     private int preferenciaIdade;
     private String preferenciaGenero;
 

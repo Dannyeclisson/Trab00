@@ -38,10 +38,5 @@ public class Match extends UsuarioBase{
         this.matchAceito = false;
     }
 
-    public void apagarContar(){
+    public void apagarConta(){
     }
-
-    public String getNomeMatch(){
-        return nomeUsuario;
-    }
-}
